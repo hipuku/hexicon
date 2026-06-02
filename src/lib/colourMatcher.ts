@@ -10,6 +10,14 @@ export interface ColourMatch {
   label: string     // plain-English accuracy read
 }
 
+// How many distinct named colours exist within each ΔE band around the input.
+// Low veryClose count = unambiguous naming. High count = disputed zone.
+export interface ConfidenceBands {
+  veryClose:   number  // ΔE < 3
+  approximate: number  // ΔE 3–10
+  distant:     number  // ΔE ≥ 10 (within CIE76 scan radius)
+}
+
 export interface ColourResult {
   inputHex: string
   rgb: [number, number, number]
@@ -17,6 +25,7 @@ export interface ColourResult {
   isLight: boolean
   best: ColourMatch
   runners: ColourMatch[]  // next 4 closest
+  confidence: ConfidenceBands
 }
 
 interface ColourEntry {
@@ -40,11 +49,16 @@ function accuracyLabel(distance: number): string {
 
 const COLOUR_LIST: ColourEntry[] = Object.entries(
   colornames as Record<string, string>
-).map(([hex, name]) => {
-  const h = hex.length === 6 ? hex : hex.padStart(6, '0')
-  const [L, a, b] = chroma(`#${h}`).lab()
-  return { hex: `#${h}`, name, L, a, b }
-})
+).reduce<ColourEntry[]>((acc, [hex, name]) => {
+  try {
+    const h = hex.length === 6 ? hex : hex.padStart(6, '0')
+    const [L, a, b] = chroma(`#${h}`).lab()
+    acc.push({ hex: `#${h}`, name, L, a, b })
+  } catch {
+    // skip malformed dataset entries
+  }
+  return acc
+}, [])
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -61,45 +75,42 @@ export function isValidHex(input: string): boolean {
 
 // ─── Core matching ────────────────────────────────────────────────────────────
 
-// Uses CIE76 (Euclidean in Lab) for the initial scan across 30k entries —
-// fast enough for real-time use. Top-5 candidates are then re-ranked with
-// CIEDE2000 via chroma.deltaE() for accurate final distances.
-function findTopMatches(hex: string, count = 5): ColourMatch[] {
+// Two-stage search: CIE76 (fast Euclidean in Lab) narrows the 30k dataset to
+// candidates within a generous radius; CIEDE2000 re-scores those candidates for
+// accurate final distances. The wider CIE76 radius (vs the previous top-N heap)
+// captures enough neighbours to compute meaningful confidence bands.
+const CIE76_RADIUS = 28
+
+function findMatchesWithConfidence(hex: string, topCount = 5): {
+  topMatches: ColourMatch[]
+  confidence: ConfidenceBands
+} {
   const [L1, a1, b1] = chroma(hex).lab()
 
-  // Collect top candidates by CIE76 first
-  const heap: { entry: ColourEntry; dist76: number }[] = []
-  let worstInHeap = Infinity
-
+  // Collect all candidates within the CIE76 radius
+  const candidates: ColourEntry[] = []
   for (const entry of COLOUR_LIST) {
     const d = Math.sqrt(
       (L1 - entry.L) ** 2 + (a1 - entry.a) ** 2 + (b1 - entry.b) ** 2
     )
-    if (heap.length < count * 4) {
-      heap.push({ entry, dist76: d })
-      if (heap.length === count * 4) {
-        worstInHeap = Math.max(...heap.map(h => h.dist76))
-      }
-    } else if (d < worstInHeap) {
-      const idx = heap.findIndex(h => h.dist76 === worstInHeap)
-      heap[idx] = { entry, dist76: d }
-      worstInHeap = Math.max(...heap.map(h => h.dist76))
-    }
+    if (d < CIE76_RADIUS) candidates.push(entry)
   }
 
-  // Re-rank with CIEDE2000 and return top `count`
-  return heap
-    .map(({ entry }) => {
+  // CIEDE2000-score every candidate and sort
+  const scored: ColourMatch[] = candidates
+    .map(entry => {
       const distance = Math.round(chroma.deltaE(hex, entry.hex) * 10) / 10
-      return {
-        name: entry.name,
-        hex: entry.hex,
-        distance,
-        label: accuracyLabel(distance),
-      }
+      return { name: entry.name, hex: entry.hex, distance, label: accuracyLabel(distance) }
     })
     .sort((a, b) => a.distance - b.distance)
-    .slice(0, count)
+
+  const confidence: ConfidenceBands = {
+    veryClose:   scored.filter(m => m.distance < 3).length,
+    approximate: scored.filter(m => m.distance >= 3 && m.distance < 10).length,
+    distant:     scored.filter(m => m.distance >= 10).length,
+  }
+
+  return { topMatches: scored.slice(0, topCount), confidence }
 }
 
 // ─── Public API ───────────────────────────────────────────────────────────────
@@ -109,7 +120,8 @@ export function nameColour(input: string): ColourResult | null {
   if (!hex) return null
 
   const colour = chroma(hex)
-  const [best, ...runners] = findTopMatches(hex, 5)
+  const { topMatches, confidence } = findMatchesWithConfidence(hex, 5)
+  const [best, ...runners] = topMatches
 
   const hslRaw = colour.hsl()
 
@@ -124,5 +136,6 @@ export function nameColour(input: string): ColourResult | null {
     isLight: colour.luminance() > 0.35,
     best,
     runners,
+    confidence,
   }
 }

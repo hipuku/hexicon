@@ -1,22 +1,51 @@
-import { useState } from 'react'
-import { AppSidebar, type ViewId } from '@/components/AppSidebar'
-import { ViewAbout }   from '@/components/ViewAbout'
-import { ViewName }    from '@/components/ViewName'
-import { ViewPalette } from '@/components/ViewPalette'
-import { ViewContext } from '@/components/ViewContext'
+import { useState }        from 'react'
+import { Info, Hash, Map, GitCompare, Globe } from 'lucide-react'
+import { AppSidebar }      from '@kern/organisms/AppSidebar'
+import { HipukuLogo }      from '@kern/organisms/HipukuLogo'
+import { GitHubIcon }      from '@kern/atoms/GitHubIcon'
+import { ViewAbout }       from '@/components/ViewAbout'
+import { ViewName }        from '@/components/ViewName'
+import { ViewStructure }   from '@/components/ViewStructure'
+import { ViewDifference }  from '@/components/ViewDifference'
+import type { ViewId }     from './types'
+
+const NAV_ITEMS = [
+  { id: 'about',      label: 'About',               icon: Info       },
+  { id: 'name',       label: 'Name a colour',        icon: Hash       },
+  { id: 'structure',  label: 'Map a palette',         icon: Map        },
+  { id: 'difference', label: 'Compare two colours',  icon: GitCompare },
+]
+
+const SOCIAL_LINKS = [
+  { Icon: Globe,      label: 'hexicon website' },
+  { Icon: GitHubIcon, label: 'GitHub'           },
+]
 
 export default function App() {
   const [activeView, setActiveView] = useState<ViewId>('about')
 
   return (
     <div className="flex h-screen overflow-hidden bg-background text-foreground">
-      <AppSidebar activeView={activeView} onNavigate={setActiveView} />
+      <AppSidebar
+        logo={<img src="/hexicon.svg" alt="hexicon" className="h-5 w-auto" />}
+        navItems={NAV_ITEMS}
+        activeId={activeView}
+        onNavigate={(id) => setActiveView(id as ViewId)}
+        accentActiveClass="text-pulsar"
+        socialLinks={SOCIAL_LINKS}
+        colophon={
+          <div className="flex items-center gap-2">
+            <span>2026 © hexicon by</span>
+            <HipukuLogo />
+          </div>
+        }
+      />
 
       <main className="flex-1 overflow-y-auto p-10">
-        {activeView === 'about'   && <ViewAbout onNavigate={setActiveView} />}
-        {activeView === 'name'    && <ViewName />}
-        {activeView === 'palette' && <ViewPalette />}
-        {activeView === 'context' && <ViewContext />}
+        {activeView === 'about'      && <ViewAbout onNavigate={setActiveView} />}
+        {activeView === 'name'       && <ViewName />}
+        {activeView === 'structure'  && <ViewStructure />}
+        {activeView === 'difference' && <ViewDifference />}
       </main>
     </div>
   )

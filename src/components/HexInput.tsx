@@ -17,7 +17,7 @@ export function HexInput({ id, label, value, onChange, placeholder = '#A1B2C3', 
 
   return (
     <div className="flex flex-col gap-2">
-      <label htmlFor={id} className="text-annotation text-void-50 uppercase tracking-[0.08em]">
+      <label htmlFor={id} className="type-annotation-sc text-void-50">
         {label}
       </label>
       <div className={cn(
@@ -37,11 +37,11 @@ export function HexInput({ id, label, value, onChange, placeholder = '#A1B2C3', 
           spellCheck={false}
           autoComplete="off"
           autoFocus={autoFocus}
-          className="flex-1 bg-transparent outline-none font-mono text-code text-void-90 placeholder:text-void-40"
+          className="flex-1 bg-transparent outline-none type-code text-void-90 placeholder:text-void-40"
         />
       </div>
       {hasError && (
-        <p className="text-annotation text-flare">Must be a # followed by 3 or 6 hex characters — e.g. #A1B2C3 or #FFF</p>
+        <p className="type-annotation text-flare">Must be a # followed by 3 or 6 hex characters — e.g. #A1B2C3 or #FFF</p>
       )}
     </div>
   )
