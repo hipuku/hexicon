@@ -51,49 +51,49 @@ describe('isValidHex', () => {
 })
 
 describe('nameColour', () => {
-  it('returns null for invalid hex', () => {
-    expect(nameColour('invalid')).toBeNull()
+  it('returns null for invalid hex', async () => {
+    expect(await nameColour('invalid')).toBeNull()
   })
 
-  it('finds an exact match for black', () => {
-    const result = nameColour('#000000')
+  it('finds an exact match for black', async () => {
+    const result = await nameColour('#000000')
     expect(result).not.toBeNull()
     expect(result!.best.distance).toBe(0)
     expect(result!.best.name.toLowerCase()).toContain('black')
   })
 
-  it('finds an exact match for white', () => {
-    const result = nameColour('#FFFFFF')
+  it('finds an exact match for white', async () => {
+    const result = await nameColour('#FFFFFF')
     expect(result).not.toBeNull()
     expect(result!.best.distance).toBe(0)
     expect(result!.best.name.toLowerCase()).toContain('white')
   })
 
-  it('returns exactly 4 runners-up', () => {
-    const result = nameColour('#A1B2C3')
+  it('returns exactly 4 runners-up', async () => {
+    const result = await nameColour('#A1B2C3')
     expect(result!.runners).toHaveLength(4)
   })
 
-  it('returns correct RGB components for pure red', () => {
-    const result = nameColour('#FF0000')
+  it('returns correct RGB components for pure red', async () => {
+    const result = await nameColour('#FF0000')
     expect(result!.rgb).toEqual([255, 0, 0])
   })
 
-  it('returns hue 0 for pure red', () => {
-    const result = nameColour('#FF0000')
+  it('returns hue 0 for pure red', async () => {
+    const result = await nameColour('#FF0000')
     expect(result!.hsl[0]).toBe(0)
   })
 
-  it('marks dark colours as not light', () => {
-    expect(nameColour('#111111')!.isLight).toBe(false)
+  it('marks dark colours as not light', async () => {
+    expect((await nameColour('#111111'))!.isLight).toBe(false)
   })
 
-  it('marks light colours as light', () => {
-    expect(nameColour('#EEEEEE')!.isLight).toBe(true)
+  it('marks light colours as light', async () => {
+    expect((await nameColour('#EEEEEE'))!.isLight).toBe(true)
   })
 
-  it('runners are sorted by ascending distance', () => {
-    const result = nameColour('#A1B2C3')!
+  it('runners are sorted by ascending distance', async () => {
+    const result = (await nameColour('#A1B2C3'))!
     for (let i = 1; i < result.runners.length; i++) {
       expect(result.runners[i].distance).toBeGreaterThanOrEqual(result.runners[i - 1].distance)
     }

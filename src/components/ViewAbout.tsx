@@ -1,6 +1,7 @@
 import type { ViewId } from '../types'
 import { Section } from '@kern/molecules/Section'
 import { ToolLink } from '@kern/molecules/ToolLink'
+import { DataTable } from '@kern/molecules/DataTable'
 import { ExternalLink } from '@kern/atoms/ExternalLink'
 import { BulletItem } from '@kern/atoms/BulletItem'
 
@@ -22,10 +23,16 @@ export function ViewAbout({ onNavigate }: ViewAboutProps) {
           applies corrections for lightness, chroma, and hue non-uniformities to produce a ΔE value that closely tracks what a human observer would judge as different.
         </p>
         <p className="type-p-sm text-void-60">
-          A ΔE of 1 is approximately the just-noticeable difference (JND) — the smallest change the average eye can detect under controlled conditions. Below 3 is a close match within the same colour name. Above 10, the colours are perceptually distinct.
+          A ΔE of 1 is approximately the just-noticeable difference (JND), the smallest change the average eye can detect under controlled conditions. Below 3 is a close match within the same colour name. Above 10, the colours are perceptually distinct.
         </p>
 
-        <DeltaETable />
+        <DataTable
+          columns={['ΔE', 'Perception']}
+          rows={DE_ROWS.map(row => [
+            <span className="font-mono">{row.range}</span>,
+            row.label,
+          ])}
+        />
 
         <p className="type-p-sm text-void-60">
           The dataset is{' '}
@@ -40,7 +47,7 @@ export function ViewAbout({ onNavigate }: ViewAboutProps) {
           — that colour categories have focal points where naming is universal, and boundaries where it is contested. A colour with many competing names within ΔE 3 sits at one of those boundaries.
         </p>
 
-        <ToolLink onClick={() => onNavigate('name')} colour="text-pulsar hover:text-pulsar-light">
+        <ToolLink onClick={() => onNavigate('name')} colour="pulsar">
           Name a colour →
         </ToolLink>
       </Section>
@@ -51,11 +58,11 @@ export function ViewAbout({ onNavigate }: ViewAboutProps) {
           RGB is convenient for screens but perceptually non-uniform — a step of 10 in red looks different from the same step in blue. OKLCH (Björn Ottosson, 2020) is a polar form of the Oklab colour space designed to be perceptually uniform: equal steps in L, C, or H produce equal-feeling changes to the eye.
         </p>
         <p className="type-p-sm text-void-60">
-          The polar plot maps each colour by its hue angle (H) and chroma distance from centre (C). A palette with principled structure — what{' '}
+          The polar plot maps each colour by its hue angle (H) and chroma distance from centre (C). A palette with principled structure (described by{' '}
           <ExternalLink href="https://www.munsell.com/color-education/munsell-color-system/">
             Munsell (1905)
           </ExternalLink>{' '}
-          called consistent value and chroma relationships — appears as a coherent cluster or arc. An assembled-by-eye palette scatters.
+          as consistent value and chroma relationships) appears as a coherent cluster or arc. An assembled-by-eye palette scatters.
         </p>
 
         <ul className="flex flex-col gap-3 list-none p-0 m-0">
@@ -74,7 +81,7 @@ export function ViewAbout({ onNavigate }: ViewAboutProps) {
           Achromatic colours (neutrals, greys) have undefined hue and are excluded from the arc calculation but visible at the centre of the polar plot.
         </p>
 
-        <ToolLink onClick={() => onNavigate('structure')} colour="text-orbit hover:text-orbit-light">
+        <ToolLink onClick={() => onNavigate('structure')} colour="orbit">
           Map a palette →
         </ToolLink>
       </Section>
@@ -104,7 +111,7 @@ export function ViewAbout({ onNavigate }: ViewAboutProps) {
           . The surround backgrounds are generated in OKLCH — matched to each colour's lightness and hue at moderated chroma — so the relationship is perceptually interpretable.
         </p>
 
-        <ToolLink onClick={() => onNavigate('difference')} colour="text-tidal hover:text-tidal-light">
+        <ToolLink onClick={() => onNavigate('difference')} colour="tidal">
           Compare two colours →
         </ToolLink>
       </Section>
@@ -113,7 +120,7 @@ export function ViewAbout({ onNavigate }: ViewAboutProps) {
   )
 }
 
-// ─── ΔE reference table ───────────────────────────────────────────────────────
+// ─── ΔE reference table data ─────────────────────────────────────────────────
 
 const DE_ROWS = [
   { range: '< 1',   label: 'Imperceptible to the average observer' },
@@ -122,26 +129,3 @@ const DE_ROWS = [
   { range: '10–50', label: 'Perceptually distinct colours' },
   { range: '≥ 50',  label: 'Categorically different' },
 ]
-
-function DeltaETable() {
-  return (
-    <div className="rounded-xl border border-void-30 overflow-hidden">
-      <table className="w-full">
-        <thead>
-          <tr className="border-b border-void-20">
-            <th className="text-left px-4 py-2 type-annotation-sc text-void-60 w-24">ΔE</th>
-            <th className="text-left px-4 py-2 type-annotation-sc text-void-60">Perception</th>
-          </tr>
-        </thead>
-        <tbody>
-          {DE_ROWS.map((row, i) => (
-            <tr key={i} className={i < DE_ROWS.length - 1 ? 'border-b border-void-20' : ''}>
-              <td className="px-4 py-2.5 type-annotation font-mono text-void-60">{row.range}</td>
-              <td className="px-4 py-2.5 type-p-sm text-void-60">{row.label}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  )
-}

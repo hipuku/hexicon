@@ -1,23 +1,20 @@
 # hexicon
 
-A perceptual colour toolkit built on CIEDE2000 and oklab — no cloud APIs, everything runs in the browser.
+Perceptual colour tools in the browser. Live at [hexicon.hipuku.dev](https://hexicon.hipuku.dev).
 
 ## Tools
 
-**Name** — Enter a hex code to find its closest English name using CIEDE2000 perceptual distance across a 30 000-colour database.
+**Name** — finds the closest English name for any hex code using CIEDE2000 across 30,000 colours.
 
-**Evaluate** — Paste a palette of hex codes and get a full perceptual analysis: oklab spread, lightness range, simultaneous WCAG AA/AAA contrast coverage, near-identical pair detection, and midtone gap warnings.
+**Map palette** — analyses a palette in OKLCH: lightness uniformity, chroma coherence, hue arc, WCAG AA/AAA contrast matrix, near-identical pairs.
 
-**Simultaneous contrast** — See how the same colour shifts perceptually on different surrounds. Demonstrates simultaneous contrast and lightness adaptation using oklch-computed complement and neutral backgrounds.
+**Compare** — CIEDE2000 distance between two colours, with crispening panels showing how context shifts apparent difference.
 
 ## Stack
 
 - React 19 + TypeScript
-- Vite
-- Tailwind CSS v4
-- shadcn/ui (base token layer only)
-- chroma-js (colour space conversions)
-- Parkinsans + Geist Mono
+- Vite, Tailwind CSS v4, shadcn/ui (token layer only)
+- chroma-js, Parkinsans + Geist Mono (Google Fonts)
 
 ## Development
 
@@ -25,3 +22,5 @@ A perceptual colour toolkit built on CIEDE2000 and oklab — no cloud APIs, ever
 npm install
 npm run dev
 ```
+
+See [DECISIONS.md](DECISIONS.md) for engineering rationale.

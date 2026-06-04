@@ -1,5 +1,4 @@
 import chroma from 'chroma-js'
-import colornames from './colornames.json'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -31,7 +30,7 @@ export interface ColourResult {
 interface ColourEntry {
   hex: string
   name: string
-  // Lab values precomputed at module load — no repeated conversions at query time
+  // Lab values precomputed at load time — no repeated conversions at query time
   L: number
   a: number
   b: number
@@ -45,20 +44,23 @@ function accuracyLabel(distance: number): string {
   return 'rough match'
 }
 
-// ─── Lookup table — precomputed at module load ────────────────────────────────
+// ─── Lazy lookup table ────────────────────────────────────────────────────────
 
-const COLOUR_LIST: ColourEntry[] = Object.entries(
-  colornames as Record<string, string>
-).reduce<ColourEntry[]>((acc, [hex, name]) => {
-  try {
-    const h = hex.length === 6 ? hex : hex.padStart(6, '0')
-    const [L, a, b] = chroma(`#${h}`).lab()
-    acc.push({ hex: `#${h}`, name, L, a, b })
-  } catch {
-    // skip malformed dataset entries
-  }
-  return acc
-}, [])
+let _colourList: ColourEntry[] | null = null
+
+async function getColourList(): Promise<ColourEntry[]> {
+  if (_colourList) return _colourList
+  const { default: colornames } = await import('./colornames.json')
+  _colourList = Object.entries(colornames as Record<string, string>).reduce<ColourEntry[]>((acc, [hex, name]) => {
+    try {
+      const h = hex.length === 6 ? hex : hex.padStart(6, '0')
+      const [L, a, b] = chroma(`#${h}`).lab()
+      acc.push({ hex: `#${h}`, name, L, a, b })
+    } catch { /* skip malformed */ }
+    return acc
+  }, [])
+  return _colourList
+}
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -81,15 +83,16 @@ export function isValidHex(input: string): boolean {
 // captures enough neighbours to compute meaningful confidence bands.
 const CIE76_RADIUS = 28
 
-function findMatchesWithConfidence(hex: string, topCount = 5): {
+async function findMatchesWithConfidence(hex: string, topCount = 5): Promise<{
   topMatches: ColourMatch[]
   confidence: ConfidenceBands
-} {
+}> {
+  const colourList = await getColourList()
   const [L1, a1, b1] = chroma(hex).lab()
 
   // Collect all candidates within the CIE76 radius
   const candidates: ColourEntry[] = []
-  for (const entry of COLOUR_LIST) {
+  for (const entry of colourList) {
     const d = Math.sqrt(
       (L1 - entry.L) ** 2 + (a1 - entry.a) ** 2 + (b1 - entry.b) ** 2
     )
@@ -115,12 +118,12 @@ function findMatchesWithConfidence(hex: string, topCount = 5): {
 
 // ─── Public API ───────────────────────────────────────────────────────────────
 
-export function nameColour(input: string): ColourResult | null {
+export async function nameColour(input: string): Promise<ColourResult | null> {
   const hex = parseHex(input)
   if (!hex) return null
 
   const colour = chroma(hex)
-  const { topMatches, confidence } = findMatchesWithConfidence(hex, 5)
+  const { topMatches, confidence } = await findMatchesWithConfidence(hex, 5)
   const [best, ...runners] = topMatches
 
   const hslRaw = colour.hsl()

@@ -47,7 +47,7 @@ export function PolarPlot({ points, size = 300 }: PolarPlotProps) {
           cx={cx} cy={cy}
           r={(c / MAX_CHROMA) * R}
           fill="none"
-          stroke="rgba(255,255,255,0.06)"
+          stroke="#383839"
           strokeWidth={1}
         />
       ))}
@@ -61,7 +61,7 @@ export function PolarPlot({ points, size = 300 }: PolarPlotProps) {
             x1={cx} y1={cy}
             x2={cx + R * Math.cos(rad)}
             y2={cy + R * Math.sin(rad)}
-            stroke="rgba(255,255,255,0.06)"
+            stroke="#383839"
             strokeWidth={1}
           />
         )
@@ -79,7 +79,7 @@ export function PolarPlot({ points, size = 300 }: PolarPlotProps) {
             textAnchor="middle"
             dominantBaseline="middle"
             fontSize={9}
-            fill="rgba(255,255,255,0.2)"
+            fill="#575759"
             fontFamily="'Geist Mono', monospace"
           >
             {label}
@@ -94,7 +94,7 @@ export function PolarPlot({ points, size = 300 }: PolarPlotProps) {
           x={cx + 4}
           y={cy - (c / MAX_CHROMA) * R - 3}
           fontSize={8}
-          fill="rgba(255,255,255,0.18)"
+          fill="#575759"
           fontFamily="'Geist Mono', monospace"
         >
           {c}
@@ -102,7 +102,7 @@ export function PolarPlot({ points, size = 300 }: PolarPlotProps) {
       ))}
 
       {/* ── Centre dot ── */}
-      <circle cx={cx} cy={cy} r={2} fill="rgba(255,255,255,0.15)" />
+      <circle cx={cx} cy={cy} r={2} fill="#383839" />
 
       {/* ── Colour points ── */}
       {points.map(pt => {

@@ -1,4 +1,5 @@
 import chroma from 'chroma-js'
+import type { StatusChipColour } from '@kern/atoms/StatusChip'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -37,31 +38,31 @@ export function classifyDeltaE(de: number): DeltaEBand {
   return 'different'
 }
 
-export const BAND_LABELS: Record<DeltaEBand, { label: string; description: string; colour: string }> = {
+export const BAND_LABELS: Record<DeltaEBand, { label: string; description: string; colour: StatusChipColour }> = {
   imperceptible: {
     label:       'Imperceptible',
     description: 'Below the just-noticeable difference for the average observer.',
-    colour:      'text-void-50',
+    colour:      'neutral',
   },
   jnd: {
     label:       'Just noticeable',
-    description: 'At the JND threshold — visible under controlled conditions, easy to miss in context.',
-    colour:      'text-orbit',
+    description: 'At the JND threshold. Visible under controlled conditions, easy to miss in context.',
+    colour:      'orbit',
   },
   noticeable: {
     label:       'Noticeable',
     description: 'Clearly different colours, likely within the same perceptual category.',
-    colour:      'text-supernova-light',
+    colour:      'supernova',
   },
   distinct: {
     label:       'Distinct',
-    description: 'Perceptually distinct — likely perceived as different colour categories.',
-    colour:      'text-pulsar-light',
+    description: 'Perceptually distinct. Likely perceived as different colour categories.',
+    colour:      'pulsar',
   },
   different: {
     label:       'Categorically different',
-    description: 'Far apart in colour space — categorically different to any observer.',
-    colour:      'text-nebula-light',
+    description: 'Far apart in colour space. Categorically different to any observer.',
+    colour:      'nebula',
   },
 }
 
@@ -99,7 +100,7 @@ export function compareColours(hexA: string, hexB: string): ColourComparison {
     {
       background:  NEUTRAL_BG,
       label:       'Neutral',
-      description: 'Achromatic mid-grey — no hue push from the surround.',
+      description: 'Achromatic mid-grey. No hue push from the surround.',
       deA:         de(hexA, NEUTRAL_BG),
       deB:         de(hexB, NEUTRAL_BG),
     },

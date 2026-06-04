@@ -17,12 +17,13 @@ const NAV_ITEMS = [
 ]
 
 const SOCIAL_LINKS = [
-  { Icon: Globe,      label: 'hexicon website' },
-  { Icon: GitHubIcon, label: 'GitHub'           },
+  { Icon: Globe,      label: 'hexicon website', href: 'https://www.hipuku.dev'                                              },
+  { Icon: GitHubIcon, label: 'GitHub',           href: 'https://github.com/hipuku/hexicon' },
 ]
 
 export default function App() {
   const [activeView, setActiveView] = useState<ViewId>('about')
+  const [mobileOpen, setMobileOpen] = useState(false)
 
   return (
     <div className="flex h-screen overflow-hidden bg-background text-foreground">
@@ -33,6 +34,8 @@ export default function App() {
         onNavigate={(id) => setActiveView(id as ViewId)}
         accentActiveClass="text-pulsar"
         socialLinks={SOCIAL_LINKS}
+        mobileOpen={mobileOpen}
+        onMobileToggle={() => setMobileOpen(o => !o)}
         colophon={
           <div className="flex items-center gap-2">
             <span>2026 © hexicon by</span>

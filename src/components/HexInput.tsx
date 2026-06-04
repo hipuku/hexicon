@@ -17,7 +17,7 @@ export function HexInput({ id, label, value, onChange, placeholder = '#A1B2C3', 
 
   return (
     <div className="flex flex-col gap-2">
-      <label htmlFor={id} className="type-annotation-sc text-void-50">
+      <label htmlFor={id} className="type-annotation-sc text-void-60">
         {label}
       </label>
       <div className={cn(

@@ -6,7 +6,7 @@ export interface OklchPoint {
   hex: string
   L: number   // 0–1
   C: number   // 0–0.4
-  H: number   // 0–360 (NaN for achromatic)
+  H: number   // 0–360; NaN for achromatic colours (C < ACHROMATIC_THRESHOLD)
 }
 
 export interface LightnessUniformity {
@@ -120,19 +120,24 @@ function analyseHueArc(points: OklchPoint[]): HueArc {
 
   // Find the largest gap in the circle of hues; the arc is its complement
   const hues = [...chromatic.map(p => p.H)].sort((a, b) => a - b)
-  let maxGap = 0
+
+  // Find the largest gap (including wrap-around) to determine arc span and start
+  let maxGap = hues[0] + 360 - hues[hues.length - 1]
+  let arcStartIdx = 0
+
   for (let i = 1; i < hues.length; i++) {
-    maxGap = Math.max(maxGap, hues[i] - hues[i - 1])
+    const gap = hues[i] - hues[i - 1]
+    if (gap > maxGap) {
+      maxGap = gap
+      arcStartIdx = i
+    }
   }
-  // Wrap-around gap
-  maxGap = Math.max(maxGap, hues[0] + 360 - hues[hues.length - 1])
 
   const totalAngle = Math.round(360 - maxGap)
 
-  // Monotonicity: stepping through hues sorted by their position in the arc
-  // should not require backtracking. Use cumulative angular steps.
-  const gapStart = hues[hues.length - 1]
-  const reordered = [...hues.slice(hues.findIndex(h => h > gapStart) % hues.length), ...hues.slice(0, hues.findIndex(h => h > gapStart) % hues.length)]
+  // Reorder starting from the hue right after the largest gap, then check
+  // that all angular steps travel in the same direction (no backtracking).
+  const reordered = [...hues.slice(arcStartIdx), ...hues.slice(0, arcStartIdx)]
   const steps = reordered.map((h, i) => i === 0 ? 0 : angularDiff(reordered[i - 1], h))
   const allSameSign = steps.slice(1).every(s => s >= 0) || steps.slice(1).every(s => s <= 0)
 
@@ -197,7 +202,7 @@ export function analysePalette(hexes: string[]): PaletteAnalysis | null {
 
   const points: OklchPoint[] = hexes.map(hex => {
     const [L, C, H] = chroma(hex).oklch()
-    return { hex, L, C, H: isNaN(H) ? 0 : H }
+    return { hex, L, C, H }
   })
 
   return {
