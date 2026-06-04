@@ -22,6 +22,9 @@ jobs:
           node-version: 22
           cache: npm
 
+      - name: Authenticate private packages
+        run: git config --global url."https://${{ secrets.GH_PAT }}@github.com/".insteadOf "git@github.com:"
+
       - name: Install dependencies
         run: npm ci
 
@@ -47,6 +50,9 @@ jobs:
         with:
           node-version: 22
           cache: npm
+
+      - name: Authenticate private packages
+        run: git config --global url."https://${{ secrets.GH_PAT }}@github.com/".insteadOf "git@github.com:"
 
       - name: Install dependencies
         run: npm ci
