@@ -151,16 +151,16 @@ export function ViewName() {
   const [input, setInput] = useState('')
   const [result, setResult] = useState<ColourResult | null>(null)
 
+  const hex = parseHex(input)
+
   useEffect(() => {
-    const hex = parseHex(input)
+    if (!hex) return
     let cancelled = false
-    if (hex) {
-      nameColour(hex).then(r => { if (!cancelled) setResult(r) })
-    } else {
-      setResult(null)
-    }
+    nameColour(hex).then(r => { if (!cancelled) setResult(r) })
     return () => { cancelled = true }
-  }, [input])
+  }, [hex])
+
+  const displayResult = hex != null && result?.inputHex === hex ? result : null
 
   return (
     <div className="max-w-3xl mx-auto w-full flex flex-col gap-8">
@@ -172,7 +172,7 @@ export function ViewName() {
 
       <HexInput id="hex-input" label="Hex" value={input} onChange={setInput} placeholder="#A1B2C3" autoFocus />
 
-      {result && <Result result={result} />}
+      {displayResult && <Result result={displayResult} />}
 
     </div>
   )
