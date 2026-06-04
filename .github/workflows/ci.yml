@@ -24,15 +24,10 @@ jobs:
 
       - name: Authenticate private packages
         run: |
+          git config --local --unset-all http.https://github.com/.extraheader || true
+          git config --global url."https://${{ secrets.GH_PAT }}@github.com/".insteadOf "https://github.com/"
           git config --global url."https://${{ secrets.GH_PAT }}@github.com/".insteadOf "git@github.com:"
           git config --global url."https://${{ secrets.GH_PAT }}@github.com/".insteadOf "ssh://git@github.com/"
-
-      - name: Debug auth
-        run: |
-          echo "PAT length: ${#GH_PAT}"
-          git ls-remote https://${{ secrets.GH_PAT }}@github.com/hipuku/kern.git HEAD
-        env:
-          GH_PAT: ${{ secrets.GH_PAT }}
 
       - name: Install dependencies
         run: npm ci
