@@ -153,9 +153,12 @@ export function ViewName() {
 
   useEffect(() => {
     const hex = parseHex(input)
-    if (!hex) { setResult(null); return }
     let cancelled = false
-    nameColour(hex).then(r => { if (!cancelled) setResult(r) })
+    if (hex) {
+      nameColour(hex).then(r => { if (!cancelled) setResult(r) })
+    } else {
+      setResult(null)
+    }
     return () => { cancelled = true }
   }, [input])
 
