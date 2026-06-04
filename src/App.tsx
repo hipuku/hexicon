@@ -44,7 +44,7 @@ export default function App() {
         }
       />
 
-      <main className="flex-1 overflow-y-auto p-10">
+      <main className="flex-1 h-full overflow-y-auto p-10">
         {activeView === 'about'      && <ViewAbout onNavigate={setActiveView} />}
         {activeView === 'name'       && <ViewName />}
         {activeView === 'structure'  && <ViewStructure />}
