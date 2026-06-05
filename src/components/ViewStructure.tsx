@@ -43,7 +43,7 @@ function ContrastMatrix({ analysis }: { analysis: PaletteAnalysis }) {
           </thead>
           <tbody>
             {hexes.map((row, i) => (
-              <tr key={row} className="hover:bg-void-20/50 transition-colors duration-100">
+              <tr key={row} className="hover:bg-void-20/50 transition-colors duration-150">
                 <td className="pr-2">
                   <div className="w-6 h-6 rounded-sm border border-void-30" style={{ backgroundColor: row }} />
                 </td>
