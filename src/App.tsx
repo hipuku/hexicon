@@ -1,8 +1,8 @@
 import { useState }        from 'react'
-import { Info, Hash, Map, GitCompare, Globe } from 'lucide-react'
+import { Info, Hash, Map, GitCompare } from 'lucide-react'
 import { AppSidebar }      from '@kern/organisms/AppSidebar'
-import { HipukuLogo }      from '@kern/organisms/HipukuLogo'
-import { GitHubIcon }      from '@kern/atoms/GitHubIcon'
+import { HipukuLogo }      from '@kern/atoms/HipukuLogo'
+import { SocialBar }       from '@kern/molecules/SocialBar'
 import { ViewAbout }       from '@/components/ViewAbout'
 import { ViewName }        from '@/components/ViewName'
 import { ViewStructure }   from '@/components/ViewStructure'
@@ -14,11 +14,6 @@ const NAV_ITEMS = [
   { id: 'name',       label: 'Name a colour',        icon: Hash       },
   { id: 'structure',  label: 'Map a palette',         icon: Map        },
   { id: 'difference', label: 'Compare two colours',  icon: GitCompare },
-]
-
-const SOCIAL_LINKS = [
-  { Icon: Globe,      label: 'hexicon website', href: 'https://www.hipuku.dev'                                              },
-  { Icon: GitHubIcon, label: 'GitHub',           href: 'https://github.com/hipuku/hexicon' },
 ]
 
 export default function App() {
@@ -33,7 +28,7 @@ export default function App() {
         activeId={activeView}
         onNavigate={(id) => setActiveView(id as ViewId)}
         accentActiveClass="text-pulsar"
-        socialLinks={SOCIAL_LINKS}
+        social={<SocialBar siteName="hexicon" githubUrl="https://github.com/hipuku/hexicon" />}
         mobileOpen={mobileOpen}
         onMobileToggle={() => setMobileOpen(o => !o)}
         colophon={

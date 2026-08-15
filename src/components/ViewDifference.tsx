@@ -109,7 +109,7 @@ export function ViewDifference() {
               label="CIEDE2000 difference"
               value={`ΔE ${comparison.deltaE}`}
               badge={bandInfo.label}
-              badgeColor={bandInfo.colour}
+              badgeColour={bandInfo.colour}
               sub={bandInfo.description}
             />
             <div className="rounded-xl px-4 py-3 bg-void-20 border border-void-30 flex flex-col gap-1">
