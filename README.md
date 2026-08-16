@@ -23,4 +23,4 @@ npm install
 npm run dev
 ```
 
-See [DECISIONS.md](DECISIONS.md) for engineering rationale.
+See [DESIGN.md](DESIGN.md) for engineering rationale.
