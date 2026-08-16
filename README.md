@@ -14,7 +14,7 @@ Perceptual colour tools in the browser. Live at [hexicon.hipuku.dev](https://hex
 
 - React 19 + TypeScript
 - Vite, Tailwind CSS v4, [kern](https://github.com/hipuku/kern) (shared component library), shadcn/ui (token layer only)
-- chroma-js, Parkinsans + Geist Mono (Google Fonts)
+- [haus-colour-utils](https://www.npmjs.com/package/haus-colour-utils) (my published package — CIEDE2000 ΔE and WCAG contrast power the Compare and Map tools), chroma-js (OKLCH/Lab conversions), Parkinsans + Geist Mono (Google Fonts)
 
 ## Development
 

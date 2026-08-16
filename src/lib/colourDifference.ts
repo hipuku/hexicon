@@ -1,4 +1,5 @@
 import chroma from 'chroma-js'
+import { deltaE as ciede2000 } from 'haus-colour-utils'
 import type { StatusChipColour } from '@kern/atoms/StatusChip'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -88,13 +89,13 @@ function nearBackground(hex: string): string {
 const NEUTRAL_BG = '#56565A'
 
 export function compareColours(hexA: string, hexB: string): ColourComparison {
-  const deltaE = Math.round(chroma.deltaE(hexA, hexB) * 10) / 10
+  const deltaE = Math.round(ciede2000(hexA, hexB) * 10) / 10
   const band   = classifyDeltaE(deltaE)
 
   const bgA = nearBackground(hexA)
   const bgB = nearBackground(hexB)
 
-  const de = (a: string, b: string) => Math.round(chroma.deltaE(a, b) * 10) / 10
+  const de = (a: string, b: string) => Math.round(ciede2000(a, b) * 10) / 10
 
   const panels: ComparisonPanel[] = [
     {

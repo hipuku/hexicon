@@ -1,4 +1,5 @@
 import chroma from 'chroma-js'
+import { deltaE, wcagContrast } from 'haus-colour-utils'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -150,7 +151,7 @@ function findNearIdentical(hexes: string[]): NearIdenticalPair[] {
   const pairs: NearIdenticalPair[] = []
   for (let i = 0; i < hexes.length; i++) {
     for (let j = i + 1; j < hexes.length; j++) {
-      const de = chroma.deltaE(hexes[i], hexes[j])
+      const de = deltaE(hexes[i], hexes[j])
       if (de < NEAR_IDENTICAL_DE) pairs.push({ a: hexes[i], b: hexes[j], de: Math.round(de * 10) / 10 })
     }
   }
@@ -163,7 +164,7 @@ function buildContrastPairs(hexes: string[]): ContrastPair[] {
   const pairs: ContrastPair[] = []
   for (let i = 0; i < hexes.length; i++) {
     for (let j = i + 1; j < hexes.length; j++) {
-      const ratio = Math.round(chroma.contrast(hexes[i], hexes[j]) * 10) / 10
+      const ratio = Math.round(wcagContrast(hexes[i], hexes[j]).ratio * 10) / 10
       pairs.push({ a: hexes[i], b: hexes[j], ratio, passAA: ratio >= 4.5, passAAA: ratio >= 7 })
     }
   }

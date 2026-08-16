@@ -15,6 +15,7 @@
     "chroma-js": "^3.2.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "haus-colour-utils": "^0.1.0",
     "kern": "github:hipuku/kern",
     "lucide-react": "^1.14.0",
     "react": "^19.2.6",
