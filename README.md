@@ -13,7 +13,7 @@ Perceptual colour tools in the browser. Live at [hexicon.hipuku.dev](https://hex
 ## Stack
 
 - React 19 + TypeScript
-- Vite, Tailwind CSS v4, shadcn/ui (token layer only)
+- Vite, Tailwind CSS v4, [kern](https://github.com/hipuku/kern) (shared component library), shadcn/ui (token layer only)
 - chroma-js, Parkinsans + Geist Mono (Google Fonts)
 
 ## Development
