@@ -5,7 +5,12 @@ import { cn } from '@/lib/utils'
 import { StatCard } from '@kern/molecules/StatCard'
 import { CalloutCard } from '@kern/molecules/CalloutCard'
 import { StatusChip } from '@kern/atoms/StatusChip'
-import { ViewHeader } from '@kern/molecules/ViewHeader'
+import type { AccentColour } from '@kern/lib/accent'
+import { ViewContainer } from '@kern/templates/ViewContainer'
+import { ToolView } from '@kern/organisms/ToolView'
+import { Field } from '@kern/molecules/Field'
+import { EmptyState } from '@kern/molecules/EmptyState'
+import { Textarea } from '@kern/atoms/Textarea'
 
 // ─── Swatch strip ─────────────────────────────────────────────────────────────
 
@@ -82,13 +87,11 @@ function ContrastMatrix({ analysis }: { analysis: PaletteAnalysis }) {
 
 // ─── Metric variant helpers ───────────────────────────────────────────────────
 
-type MetricVariant = 'positive' | 'info' | 'warning' | 'neutral'
-
-function ratingVariant(rating: string): MetricVariant {
+function ratingColour(rating: string): AccentColour {
   switch (rating) {
-    case 'uniform': case 'tight':  return 'positive'
-    case 'moderate':               return 'info'
-    case 'uneven':  case 'wide':   return 'warning'
+    case 'uniform': case 'tight':  return 'nebula'
+    case 'moderate':               return 'tidal'
+    case 'uneven':  case 'wide':   return 'supernova'
     default:                       return 'neutral'
   }
 }
@@ -110,41 +113,43 @@ export function ViewStructure() {
   const noHexes  = text.trim().length > 0 && hexes.length === 0
 
   return (
-    <div className="max-w-3xl mx-auto w-full flex flex-col gap-8">
-
-      <ViewHeader
+    <ViewContainer width="lg">
+      <ToolView
         title="Map a palette"
         description="Paste CSS variables, JSON, or plain hex codes. Colours are plotted in OKLCH colour space and analysed for perceptual structure."
-      />
-
-      {/* ── Input ── */}
-      <div className="flex flex-col gap-2">
-        <div className="flex items-center justify-between">
-          <label htmlFor="palette-input" className="type-annotation-sc text-void-60">
-            Palette input
-          </label>
-          <div className="flex items-center gap-2 type-annotation text-void-50">
-            {format && <span>{format}</span>}
-            {format && hexes.length > 0 && <span className="text-void-40">·</span>}
-            {hexes.length > 0 && <span>{hexes.length} colour{hexes.length !== 1 ? 's' : ''} found</span>}
-          </div>
-        </div>
-        <textarea
-          id="palette-input"
-          value={text}
-          onChange={e => setText(e.target.value)}
-          placeholder={PLACEHOLDER}
-          spellCheck={false}
-          rows={8}
-          className="type-code w-full bg-void-10 border border-void-20 focus:border-void-40 rounded-xl px-4 py-3 text-void-90 placeholder:text-void-40 outline-none resize-none transition-colors duration-150"
-        />
-      </div>
+        input={
+          <Field
+            label="Palette input"
+            aside={
+              format || hexes.length > 0 ? (
+                <span className="flex items-center gap-2 type-annotation text-ink-muted">
+                  {format && <span>{format}</span>}
+                  {format && hexes.length > 0 && <span className="text-void-40">·</span>}
+                  {hexes.length > 0 && <span>{hexes.length} colour{hexes.length !== 1 ? 's' : ''} found</span>}
+                </span>
+              ) : undefined
+            }
+          >
+            {(control) => (
+              <Textarea
+                value={text}
+                onChange={(e) => setText(e.target.value)}
+                placeholder={PLACEHOLDER}
+                spellCheck={false}
+                rows={8}
+                resize="none"
+                {...control}
+              />
+            )}
+          </Field>
+        }
+      >
 
       {noHexes && (
-        <p className="type-annotation text-void-50">No #hex codes found — ensure colour values are prefixed with #</p>
+        <EmptyState>No #hex codes found — ensure colour values are prefixed with #</EmptyState>
       )}
       {hexes.length === 1 && (
-        <p className="type-annotation text-void-50">Add at least 2 colours to see analysis.</p>
+        <EmptyState>Add at least 2 colours to see analysis.</EmptyState>
       )}
 
       {hexes.length > 0 && <SwatchStrip hexes={hexes} />}
@@ -166,20 +171,20 @@ export function ViewStructure() {
               value={`σ ${analysis.lightnessUniformity.stdDev.toFixed(1)}`}
               sub="Std dev of lightness steps. Lower = more even progression."
               badge={analysis.lightnessUniformity.rating}
-              variant={ratingVariant(analysis.lightnessUniformity.rating)}
+              badgeColour={ratingColour(analysis.lightnessUniformity.rating)}
             />
             <StatCard
               label="Chroma coherence"
               value={`σ ${(analysis.chromaCoherence.stdDev * 100).toFixed(1)}`}
               sub="Std dev of chroma values. Tight = consistent saturation band."
               badge={analysis.chromaCoherence.rating}
-              variant={ratingVariant(analysis.chromaCoherence.rating)}
+              badgeColour={ratingColour(analysis.chromaCoherence.rating)}
             />
             <StatCard
               label="Hue arc"
               value={analysis.hueArc.totalAngle > 0 ? `${analysis.hueArc.totalAngle}°` : '—'}
               badge={analysis.hueArc.totalAngle === 0 ? 'achromatic' : analysis.hueArc.isMonotonic ? 'monotonic' : 'non-monotonic'}
-              variant={analysis.hueArc.isMonotonic ? 'positive' : 'neutral'}
+              badgeColour={analysis.hueArc.isMonotonic ? 'nebula' : 'neutral'}
               sub={analysis.hueArc.totalAngle === 0
                 ? 'No chromatic colours — palette is entirely neutral.'
                 : `Colours sweep ${analysis.hueArc.totalAngle}° of the hue wheel${analysis.hueArc.hasAchromatic ? ', with neutrals excluded' : ''}.`}
@@ -213,6 +218,7 @@ export function ViewStructure() {
         </>
       )}
 
-    </div>
+      </ToolView>
+    </ViewContainer>
   )
 }

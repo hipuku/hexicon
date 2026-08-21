@@ -6,7 +6,8 @@ import { cn } from '@/lib/utils'
 import chroma from 'chroma-js'
 import { StatCard } from '@kern/molecules/StatCard'
 import { CalloutCard } from '@kern/molecules/CalloutCard'
-import { ViewHeader } from '@kern/molecules/ViewHeader'
+import { ViewContainer } from '@kern/templates/ViewContainer'
+import { ToolView } from '@kern/organisms/ToolView'
 
 // ─── Comparison panel ─────────────────────────────────────────────────────────
 
@@ -80,18 +81,17 @@ export function ViewDifference() {
   const bandInfo = comparison ? BAND_LABELS[comparison.band] : null
 
   return (
-    <div className="max-w-3xl mx-auto w-full flex flex-col gap-8">
-
-      <ViewHeader
+    <ViewContainer width="lg">
+      <ToolView
         title="Compare two colours"
         description="Measures the perceptual distance between two colours using CIEDE2000, then shows how that perceived difference changes when background context shifts — the crispening effect."
-      />
-
-      {/* ── Inputs ── */}
-      <div className="grid grid-cols-2 gap-4">
-        <HexInput id="hex-a" label="Colour A" value={inputA} onChange={setInputA} placeholder="#A1B2C3" autoFocus />
-        <HexInput id="hex-b" label="Colour B" value={inputB} onChange={setInputB} placeholder="#D4E5F6" />
-      </div>
+        input={
+          <div className="grid grid-cols-2 gap-4">
+            <HexInput id="hex-a" label="Colour A" value={inputA} onChange={setInputA} placeholder="#A1B2C3" autoFocus />
+            <HexInput id="hex-b" label="Colour B" value={inputB} onChange={setInputB} placeholder="#D4E5F6" />
+          </div>
+        }
+      >
 
       {/* ── Colour pair preview ── */}
       {hexA && hexB && (
@@ -125,6 +125,7 @@ export function ViewDifference() {
         </>
       )}
 
-    </div>
+      </ToolView>
+    </ViewContainer>
   )
 }

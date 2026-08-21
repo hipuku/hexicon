@@ -1,7 +1,9 @@
 import type { ViewId } from '../types'
+import { ViewContainer } from '@kern/templates/ViewContainer'
 import { Section } from '@kern/molecules/Section'
 import { ToolLink } from '@kern/molecules/ToolLink'
 import { DataTable } from '@kern/molecules/DataTable'
+import { BulletList } from '@kern/molecules/BulletList'
 import { ExternalLink } from '@kern/atoms/ExternalLink'
 import { BulletItem } from '@kern/atoms/BulletItem'
 
@@ -11,7 +13,7 @@ interface ViewAboutProps {
 
 export function ViewAbout({ onNavigate }: ViewAboutProps) {
   return (
-    <div className="max-w-3xl mx-auto w-full flex flex-col gap-12">
+    <ViewContainer width="lg" gap="lg">
 
       {/* ── Name a colour ── */}
       <Section title="Name a colour">
@@ -65,7 +67,7 @@ export function ViewAbout({ onNavigate }: ViewAboutProps) {
           as consistent value and chroma relationships) appears as a coherent cluster or arc. An assembled-by-eye palette scatters.
         </p>
 
-        <ul className="flex flex-col gap-3 list-none p-0 m-0">
+        <BulletList>
           <BulletItem>
             <strong className="text-void-80 font-semibold">Lightness uniformity</strong> — standard deviation of the lightness steps between colours when sorted by L. Low std dev means even perceptual stepping; high means some jumps are much larger than others.
           </BulletItem>
@@ -75,7 +77,7 @@ export function ViewAbout({ onNavigate }: ViewAboutProps) {
           <BulletItem>
             <strong className="text-void-80 font-semibold">Hue arc</strong> — how many degrees of the hue wheel the palette covers, and whether the rotation is monotonic (travels in one direction without backtracking). Complements span ~180°; analogous palettes span ~60°.
           </BulletItem>
-        </ul>
+        </BulletList>
 
         <p className="type-p-sm text-void-60">
           Achromatic colours (neutrals, greys) have undefined hue and are excluded from the arc calculation but visible at the centre of the polar plot.
@@ -116,7 +118,7 @@ export function ViewAbout({ onNavigate }: ViewAboutProps) {
         </ToolLink>
       </Section>
 
-    </div>
+    </ViewContainer>
   )
 }
 

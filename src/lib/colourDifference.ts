@@ -1,6 +1,6 @@
 import chroma from 'chroma-js'
 import { deltaE as ciede2000 } from 'haus-colour-utils'
-import type { StatusChipColour } from '@kern/atoms/StatusChip'
+import type { AccentColour } from '@kern/lib/accent'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -39,7 +39,7 @@ export function classifyDeltaE(de: number): DeltaEBand {
   return 'different'
 }
 
-export const BAND_LABELS: Record<DeltaEBand, { label: string; description: string; colour: StatusChipColour }> = {
+export const BAND_LABELS: Record<DeltaEBand, { label: string; description: string; colour: AccentColour }> = {
   imperceptible: {
     label:       'Imperceptible',
     description: 'Below the just-noticeable difference for the average observer.',

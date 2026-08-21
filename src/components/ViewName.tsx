@@ -3,8 +3,10 @@ import { nameColour, parseHex, type ColourResult, type ConfidenceBands } from '@
 import { HexInput } from './HexInput'
 import { cn } from '@/lib/utils'
 import { CopyButton } from '@kern/atoms/CopyButton'
-import { StatusChip, type StatusChipColour } from '@kern/atoms/StatusChip'
-import { ViewHeader } from '@kern/molecules/ViewHeader'
+import { StatusChip } from '@kern/atoms/StatusChip'
+import type { AccentColour } from '@kern/lib/accent'
+import { ViewContainer } from '@kern/templates/ViewContainer'
+import { ToolView } from '@kern/organisms/ToolView'
 
 // ─── Swatch chip ──────────────────────────────────────────────────────────────
 
@@ -30,10 +32,10 @@ function ConfidencePanel({ bands }: { bands: ConfidenceBands }) {
   const total = bands.veryClose + bands.approximate + bands.distant
 
   const { label, colour } = bands.veryClose <= 2
-    ? { label: 'Unambiguous',       colour: 'pulsar' as StatusChipColour }
+    ? { label: 'Unambiguous',       colour: 'pulsar' as AccentColour }
     : bands.veryClose <= 8
-    ? { label: 'Contested zone',    colour: 'orbit'  as StatusChipColour }
-    : { label: 'Disputed boundary', colour: 'flare'  as StatusChipColour }
+    ? { label: 'Contested zone',    colour: 'orbit'  as AccentColour }
+    : { label: 'Disputed boundary', colour: 'flare'  as AccentColour }
 
   return (
     <div className="flex flex-col gap-3 p-4 rounded-xl border border-void-30 bg-void-20">
@@ -163,17 +165,14 @@ export function ViewName() {
   const displayResult = hex != null && result?.inputHex === hex ? result : null
 
   return (
-    <div className="max-w-3xl mx-auto w-full flex flex-col gap-8">
-
-      <ViewHeader
+    <ViewContainer width="lg">
+      <ToolView
         title="Name a colour"
         description="Enter a hex code to find its closest English name using CIEDE2000 perceptual distance."
-      />
-
-      <HexInput id="hex-input" label="Hex" value={input} onChange={setInput} placeholder="#A1B2C3" autoFocus />
-
-      {displayResult && <Result result={displayResult} />}
-
-    </div>
+        input={<HexInput id="hex-input" label="Hex" value={input} onChange={setInput} placeholder="#A1B2C3" autoFocus />}
+      >
+        {displayResult && <Result result={displayResult} />}
+      </ToolView>
+    </ViewContainer>
   )
 }
