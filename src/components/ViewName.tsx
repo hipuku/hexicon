@@ -2,11 +2,8 @@ import { useState, useEffect } from 'react'
 import { nameColour, parseHex, type ColourResult, type ConfidenceBands } from '@/lib/colourMatcher'
 import { HexInput } from './HexInput'
 import { cn } from '@/lib/utils'
-import { CopyButton } from '@kern/atoms/CopyButton'
-import { StatusChip } from '@kern/atoms/StatusChip'
-import type { AccentColour } from '@kern/lib/accent'
-import { ViewContainer } from '@kern/templates/ViewContainer'
-import { ToolView } from '@kern/organisms/ToolView'
+import { CopyButton, StatusChip, ToolView, ViewContainer } from 'kern'
+import type { AccentColour } from 'kern'
 
 // ─── Swatch chip ──────────────────────────────────────────────────────────────
 

@@ -1,6 +1,6 @@
 import chroma from 'chroma-js'
 import { deltaE as ciede2000 } from 'haus-colour-utils'
-import type { AccentColour } from '@kern/lib/accent'
+import type { AccentColour } from 'kern'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 

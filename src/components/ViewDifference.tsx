@@ -4,10 +4,7 @@ import { parseHex, isValidHex } from '@/lib/colourMatcher'
 import { HexInput } from './HexInput'
 import { cn } from '@/lib/utils'
 import chroma from 'chroma-js'
-import { StatCard } from '@kern/molecules/StatCard'
-import { CalloutCard } from '@kern/molecules/CalloutCard'
-import { ViewContainer } from '@kern/templates/ViewContainer'
-import { ToolView } from '@kern/organisms/ToolView'
+import { CalloutCard, StatCard, ToolView, ViewContainer } from 'kern'
 
 // ─── Comparison panel ─────────────────────────────────────────────────────────
 

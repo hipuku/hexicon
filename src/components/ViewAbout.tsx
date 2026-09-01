@@ -1,11 +1,5 @@
 import type { ViewId } from '../types'
-import { ViewContainer } from '@kern/templates/ViewContainer'
-import { Section } from '@kern/molecules/Section'
-import { ToolLink } from '@kern/molecules/ToolLink'
-import { DataTable } from '@kern/molecules/DataTable'
-import { BulletList } from '@kern/molecules/BulletList'
-import { ExternalLink } from '@kern/atoms/ExternalLink'
-import { BulletItem } from '@kern/atoms/BulletItem'
+import { BulletItem, BulletList, DataTable, ExternalLink, Section, ToolLink, ViewContainer } from 'kern'
 
 interface ViewAboutProps {
   onNavigate: (view: ViewId) => void

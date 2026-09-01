@@ -2,15 +2,8 @@ import { useState, useMemo } from 'react'
 import { analysePalette, extractHexes, detectFormat, type PaletteAnalysis } from '@/lib/paletteAnalyser'
 import { PolarPlot } from './PolarPlot'
 import { cn } from '@/lib/utils'
-import { StatCard } from '@kern/molecules/StatCard'
-import { CalloutCard } from '@kern/molecules/CalloutCard'
-import { StatusChip } from '@kern/atoms/StatusChip'
-import type { AccentColour } from '@kern/lib/accent'
-import { ViewContainer } from '@kern/templates/ViewContainer'
-import { ToolView } from '@kern/organisms/ToolView'
-import { Field } from '@kern/molecules/Field'
-import { EmptyState } from '@kern/molecules/EmptyState'
-import { Textarea } from '@kern/atoms/Textarea'
+import { CalloutCard, EmptyState, Field, StatCard, StatusChip, Textarea, ToolView, ViewContainer } from 'kern'
+import type { AccentColour } from 'kern'
 
 // ─── Swatch strip ─────────────────────────────────────────────────────────────
 
