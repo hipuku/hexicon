@@ -1,4 +1,4 @@
-# hexicon — design notes
+# hexicon design notes
 
 Annotated intent. What this tool does and why each significant decision was made. Not a spec engineering notes for a new contributor or future self. If something in the code looks over-engineered or under-engineered, the answer is probably here.
 
@@ -12,7 +12,7 @@ A perceptual colour toolkit that runs entirely in the browser. Three tools: name
 
 ## Colour distance: CIEDE2000 over CIE76
 
-The core metric for everything in hexicon is CIEDE2000 (ΔE₀₀), not the simpler CIE76.
+The core metric for everything in hexicon is CIEDE2000 (ΔE₀₀). CIE76 is the simpler alternative and is not used.
 
 CIE76 is Euclidean distance in Lab fast and simple, but the Lab space is perceptually non-uniform. A ΔE of 5 looks very different depending on where in colour space you are. Blues compress (small perceptual changes map to large Lab distances), greens spread, and yellows sit at a hue angle where small Lab moves produce visible hue shifts.
 
@@ -52,15 +52,15 @@ The three-tier labels (≤2 veryClose → Unambiguous, ≤8 → Contested zone, 
 
 30,000+ hand-curated names from meodai/color-names. The main alternative would be a colorimetric standard like Pantone or NCS rigorous and systematic, but opaque (licensed, expensive) and not how people actually talk about colours.
 
-The meodai dataset has human-given names from Crayola, Pantone where available, paint manufacturers, and community curation. The names are sometimes poetic ("Rackley", "Eerie Black") rather than systematic which is exactly what the Name tool is for. It tells you what a designer or a person would call a colour, not a spectrophotometric specification.
+The meodai dataset has human-given names from Crayola, Pantone where available, paint manufacturers, and community curation. The names are sometimes poetic ("Rackley", "Eerie Black") rather than systematic which is exactly what the Name tool is for. It tells you what a designer or a person would call a colour rather than giving a spectrophotometric specification.
 
-Accepted tradeoff: coverage is uneven. Some regions of colour space (reds, blues) are densely named; others are sparse. This means the veryClose band count correlates partly with database density, not just colour category sharpness. The confidence panel is showing the naming landscape in the database, not an objective category boundary and the About view says so.
+Accepted tradeoff: coverage is uneven. Some regions of colour space (reds, blues) are densely named; others are sparse. This means the veryClose band count correlates partly with database density as well as with colour category sharpness. The confidence panel is showing the naming landscape in the database rather than an objective category boundary and the About view says so.
 
 ---
 
 ## Palette analyser: OKLCH over Lab
 
-The palette analysis (ViewStructure) works in OKLCH, not Lab or HSL.
+The palette analysis (ViewStructure) works in OKLCH.
 
 OKLCH is the polar form of Oklab (Ottosson, 2020) a more perceptually uniform Lab variant, particularly for blues and purples where the classic CIELab model breaks down. In polar form: L is perceptual lightness, C is chroma (saturation amount), H is hue angle. Equal numeric steps in OKLCH produce equal-feeling perceptual changes across the full colour range.
 
