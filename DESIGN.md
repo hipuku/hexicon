@@ -18,18 +18,18 @@ CIE76 is Euclidean distance in Lab fast and simple, but the Lab space is percept
 
 CIEDE2000 corrects for this with three non-linear weighting functions for lightness (S_L), chroma (S_C), and hue (S_H), plus a cross-term handling the blue-yellow problematic region. Reference: Sharma, Wu & Dalal (2005), *The CIEDE2000 Color-Difference Formula*, Color Research & Application 30(1). A ΔE₀₀ of 1.0 is approximately the just-noticeable difference (JND) for an average observer under standard viewing conditions.
 
-Accepted tradeoff: CIEDE2000 is ~8× more computation per pair than CIE76. Fine for N < 200 candidates; not for a brute-force scan of 30,000 colours.
+Accepted tradeoff: CIEDE2000 is ~8× more computation per pair than CIE76. Fine for N < 200 candidates; not for a brute-force scan of 31,900 colours.
 
 ---
 
 ## Two-pass matching
 
-Scanning all 30,000 names with CIEDE2000 on every keystroke is too slow. The solution is two-pass:
+Scanning all 31,900 names with CIEDE2000 on every keystroke is too slow. The solution is two-pass:
 
-1. **CIE76 coarse scan** with radius ΔE₇₆ < 28 narrows from 30k to ~100–200 candidates. Fast Euclidean Lab distance; good enough to find the neighbourhood.
+1. **CIE76 coarse scan** with radius ΔE₇₆ < 28 narrows from 31,900 to ~100–200 candidates. Fast Euclidean Lab distance; good enough to find the neighbourhood.
 2. **CIEDE2000 re-score** of the candidate set for final ranking, confidence bands, and runner-ups.
 
-Lab values for all 30,000 colours are precomputed at load time so neither pass does repeated conversions. The CIE76 radius of 28 is deliberately wide it includes false positives, but missing the true best match in the coarse scan would be worse.
+Lab values for all 31,900 colours are precomputed at load time so neither pass does repeated conversions. The CIE76 radius of 28 is deliberately wide it includes false positives, but missing the true best match in the coarse scan would be worse.
 
 Known edge case: a colour can occasionally have its true nearest CIEDE2000 neighbour just outside the radius-28 sphere. In practice this is rare and the miss is a perceptually marginal difference.
 
@@ -50,7 +50,7 @@ The three-tier labels (≤2 veryClose → Unambiguous, ≤8 → Contested zone, 
 
 ## Colour naming data: meodai/color-names
 
-30,000+ hand-curated names from meodai/color-names. The main alternative would be a colorimetric standard like Pantone or NCS rigorous and systematic, but opaque (licensed, expensive) and not how people actually talk about colours.
+31,900 hand-curated names from meodai/color-names, vendored as `src/lib/colornames.json`. The main alternative would be a colorimetric standard like Pantone or NCS rigorous and systematic, but opaque (licensed, expensive) and not how people actually talk about colours.
 
 The meodai dataset has human-given names from Crayola, Pantone where available, paint manufacturers, and community curation. The names are sometimes poetic ("Rackley", "Eerie Black") rather than systematic which is exactly what the Name tool is for. It tells you what a designer or a person would call a colour rather than giving a spectrophotometric specification.
 

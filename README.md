@@ -4,7 +4,7 @@ Perceptual colour tools in the browser. Live at [hexicon.hipuku.dev](https://hex
 
 ## Tools
 
-**Name** finds the closest English name for any hex code using CIEDE2000 across 30,000 colours.
+**Name** finds the closest English name for any hex code using CIEDE2000 across 31,900 colours.
 
 **Map palette** analyses a palette in OKLCH: lightness uniformity, chroma coherence, hue arc, WCAG AA/AAA contrast matrix, near-identical pairs.
 
