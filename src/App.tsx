@@ -1,5 +1,5 @@
 import { useState }        from 'react'
-import { Info, Hash, Map, GitCompare } from 'lucide-react'
+import { GitCompare, Hash, Info, Map } from 'lucide-react'
 import { AppShell, Colophon, SocialBar } from 'kern'
 import { ViewAbout }        from '@/components/ViewAbout'
 import { ViewName }         from '@/components/ViewName'
@@ -24,7 +24,7 @@ export default function App() {
       activeId={activeView}
       onNavigate={(id) => setActiveView(id as ViewId)}
       accentActiveClass="text-pulsar"
-      social={<SocialBar siteName="hexicon" githubUrl="https://github.com/hipuku/hexicon" />}
+      social={<SocialBar siteName="hexicon" />}
       colophon={<Colophon name="hexicon" />}
       smallScreenNotice={
         <div className="flex flex-col gap-2 text-center max-w-xs">
