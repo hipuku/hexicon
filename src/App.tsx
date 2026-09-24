@@ -24,7 +24,7 @@ export default function App() {
       activeId={activeView}
       onNavigate={(id) => setActiveView(id as ViewId)}
       accentActiveClass="text-pulsar"
-      social={<SocialBar siteName="hexicon" />}
+      social={<SocialBar siteName="hexicon" githubUrl="https://github.com/hipuku/hexicon" />}
       colophon={<Colophon name="hexicon" />}
       smallScreenNotice={
         <div className="flex flex-col gap-2 text-center max-w-xs">
