@@ -50,6 +50,8 @@ let _colourList: ColourEntry[] | null = null
 
 async function getColourList(): Promise<ColourEntry[]> {
   if (_colourList) return _colourList
+  // The names are meodai/color-names, MIT, (c) 2017 David Aerne. Its licence
+  // travels with the data in colornames.LICENSE.
   const { default: colornames } = await import('./colornames.json')
   _colourList = Object.entries(colornames as Record<string, string>).reduce<ColourEntry[]>((acc, [hex, name]) => {
     try {

@@ -23,4 +23,4 @@ npm run dev
 
 ## Licence
 
-MIT
+MIT. The colour names come from [meodai/color-names](https://github.com/meodai/color-names), MIT, © 2017 David Aerne; its licence is in `src/lib/colornames.LICENSE`.
