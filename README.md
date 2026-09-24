@@ -4,17 +4,13 @@ Perceptual colour tools in the browser. Live at [hexicon.hipuku.dev](https://hex
 
 ## Tools
 
-**Name** finds the closest English name for any hex code using CIEDE2000 across 31,900 colours.
-
-**Map palette** analyses a palette in OKLCH: lightness uniformity, chroma coherence, hue arc, WCAG AA/AAA contrast matrix, near-identical pairs.
-
-**Compare** gives the CIEDE2000 distance between two colours, with crispening panels showing how context shifts apparent difference.
+- **Name** a colour: the closest of 31,900 names, by CIEDE2000.
+- **Map** a palette: OKLCH lightness, chroma and hue, and a WCAG contrast matrix.
+- **Compare** two colours: their CIEDE2000 distance, shown in context.
 
 ## Stack
 
-- React 19 + TypeScript
-- Vite, Tailwind CSS v4, [kern](https://github.com/hipuku/kern) (shared component library), shadcn/ui (token layer only)
-- [haus-colour-utils](https://www.npmjs.com/package/haus-colour-utils) (my published package; its CIEDE2000 ΔE and WCAG contrast power the Compare and Map tools), chroma-js (OKLCH/Lab conversions), Parkinsans + Geist Mono (Google Fonts)
+React 19, TypeScript, Vite, Tailwind CSS v4, [kern](https://github.com/hipuku/kern), [haus-colour-utils](https://www.npmjs.com/package/haus-colour-utils), chroma-js.
 
 ## Development
 
@@ -23,4 +19,8 @@ npm install
 npm run dev
 ```
 
-See [DESIGN.md](DESIGN.md) for engineering rationale.
+`npm test`, `npm run lint` and `npm run typecheck` run the checks CI runs.
+
+## Licence
+
+MIT
