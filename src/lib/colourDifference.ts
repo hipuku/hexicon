@@ -7,11 +7,11 @@ import type { AccentColour } from 'kern'
 // Named ΔE threshold bands from CIEDE2000 literature.
 // Source: Sharma et al. (2005), "The CIEDE2000 Color-Difference Formula"
 export type DeltaEBand =
-  | 'imperceptible'  // ΔE < 1   — below JND for average observer
-  | 'jnd'            // ΔE 1–2   — just-noticeable difference threshold
-  | 'noticeable'     // ΔE 2–10  — clearly different, same colour family
-  | 'distinct'       // ΔE 10–50 — perceptually distinct colours
-  | 'different'      // ΔE ≥ 50  — categorically different
+  | 'imperceptible'  // ΔE < 1, below JND for average observer
+  | 'jnd'            // ΔE 1–2, just-noticeable difference threshold
+  | 'noticeable'     // ΔE 2–10, clearly different, same colour family
+  | 'distinct'       // ΔE 10–50, perceptually distinct colours
+  | 'different'      // ΔE ≥ 50, categorically different
 
 export interface ComparisonPanel {
   background:  string   // hex
@@ -70,13 +70,13 @@ export const BAND_LABELS: Record<DeltaEBand, { label: string; description: strin
 // ─── Background generation ───────────────────────────────────────────────────
 
 // Generates a background similar to the given hex in hue and lightness,
-// at moderate chroma — close enough to trigger crispening for that colour.
+// at moderate chroma: close enough to trigger crispening for that colour.
 function nearBackground(hex: string): string {
   try {
     const [L, C, H] = chroma(hex).oklch()
     // Push lightness toward the mid range so the background is usable
     const bgL = Math.max(0.28, Math.min(0.72, L))
-    // Half the source chroma — related but not identical
+    // Half the source chroma: related but not identical
     const bgC = Math.max(0.06, Math.min(C * 0.55, 0.18))
     return chroma.oklch(bgL, bgC, isNaN(H) ? 0 : H).hex()
   } catch {

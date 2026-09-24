@@ -46,7 +46,7 @@ function ContrastMatrix({ analysis }: { analysis: PaletteAnalysis }) {
                   <div className="w-6 h-6 rounded-sm border border-void-30" style={{ backgroundColor: row }} />
                 </td>
                 {hexes.map((col, j) => {
-                  if (i === j) return <td key={col} className="px-3 py-2 text-center text-void-40 bg-void-10">—</td>
+                  if (i === j) return <td key={col} className="px-3 py-2 text-center text-void-40 bg-void-10"><span aria-hidden="true">·</span><span className="sr-only">Same colour</span></td>
                   const pair = getContrast(row, col)
                   if (!pair) return <td key={col} />
                   return (
@@ -139,7 +139,7 @@ export function ViewStructure() {
       >
 
       {noHexes && (
-        <EmptyState>No #hex codes found — ensure colour values are prefixed with #</EmptyState>
+        <EmptyState>No #hex codes found. Make sure each colour value starts with #.</EmptyState>
       )}
       {hexes.length === 1 && (
         <EmptyState>Add at least 2 colours to see analysis.</EmptyState>
@@ -175,11 +175,11 @@ export function ViewStructure() {
             />
             <StatCard
               label="Hue arc"
-              value={analysis.hueArc.totalAngle > 0 ? `${analysis.hueArc.totalAngle}°` : '—'}
+              value={analysis.hueArc.totalAngle > 0 ? `${analysis.hueArc.totalAngle}°` : 'None'}
               badge={analysis.hueArc.totalAngle === 0 ? 'achromatic' : analysis.hueArc.isMonotonic ? 'monotonic' : 'non-monotonic'}
               badgeColour={analysis.hueArc.isMonotonic ? 'nebula' : 'neutral'}
               sub={analysis.hueArc.totalAngle === 0
-                ? 'No chromatic colours — palette is entirely neutral.'
+                ? 'No chromatic colours: the palette is entirely neutral.'
                 : `Colours sweep ${analysis.hueArc.totalAngle}° of the hue wheel${analysis.hueArc.hasAchromatic ? ', with neutrals excluded' : ''}.`}
             />
           </div>

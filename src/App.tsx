@@ -30,7 +30,7 @@ export default function App() {
         <div className="flex flex-col gap-2 text-center max-w-xs">
           <p className="type-h4 text-ink-title">A palette needs room to breathe</p>
           <p className="type-p-sm text-ink-body">
-            hexicon is desktop-only for now — it doesn't fit in your pocket. Open it on a wider screen.
+            hexicon is desktop-only for now: it doesn't fit in your pocket. Open it on a wider screen.
           </p>
         </div>
       }

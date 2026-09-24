@@ -81,7 +81,7 @@ export function ViewDifference() {
     <ViewContainer width="lg">
       <ToolView
         title="Compare two colours"
-        description="Measures the perceptual distance between two colours using CIEDE2000, then shows how that perceived difference changes when background context shifts — the crispening effect."
+        description="Measures the perceptual distance between two colours using CIEDE2000, then shows how that perceived difference changes when background context shifts: the crispening effect."
         input={
           <div className="grid grid-cols-2 gap-4">
             <HexInput id="hex-a" label="Colour A" value={inputA} onChange={setInputA} placeholder="#A1B2C3" autoFocus />

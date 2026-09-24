@@ -41,7 +41,7 @@ export function HexInput({ id, label, value, onChange, placeholder = '#A1B2C3', 
         />
       </div>
       {hasError && (
-        <p className="type-annotation text-flare">Must be a # followed by 3 or 6 hex characters — e.g. #A1B2C3 or #FFF</p>
+        <p className="type-annotation text-flare">Must be a # followed by 3 or 6 hex characters, such as #A1B2C3 or #FFF</p>
       )}
     </div>
   )

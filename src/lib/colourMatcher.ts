@@ -30,7 +30,7 @@ export interface ColourResult {
 interface ColourEntry {
   hex: string
   name: string
-  // Lab values precomputed at load time — no repeated conversions at query time
+  // Lab values precomputed at load time: no repeated conversions at query time
   L: number
   a: number
   b: number
