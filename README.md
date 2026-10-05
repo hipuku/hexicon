@@ -1,5 +1,7 @@
 # hexicon
 
+![hexicon: naming #7193ed as Guilliman Blue at a CIEDE2000 distance of 2.8, with nearby names and a naming-confidence breakdown](docs/screenshot.png)
+
 Perceptual colour tools in the browser. Live at [hexicon.hipuku.dev](https://hexicon.hipuku.dev).
 
 ## Tools
